@@ -1,31 +1,31 @@
 - name: create airflow directory
   file:
-    path: /opt/airflow
+    path: /home/airflow/airflow
     state: directory
     mode: 0777
 
 - name: create dag directory
   file:
-    path: /opt/airflow/dags
+    path: /home/airflow/airflow/dags
     state: directory
     mode: 0777
 
 - name: create logs directory
   file:
-    path: /opt/airflow/logs
+    path: /home/airflow/airflow/logs
     state: directory
     mode: 0777
 
 - name: create plugin directory
   file:
-    path: /opt/airflow/plugins
+    path: /home/airflow/airflow/plugins
     state: directory
     mode: 0777
 
 - name: config - generate main configs
   template:
     src: "./templates/{{ item }}.j2"
-    dest: "/opt/airflow/{{ item }}"
+    dest: "/home/airflow/airflow/{{ item }}"
     mode: 0777
   with_items:
     - airflow.env

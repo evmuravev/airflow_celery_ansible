@@ -1,0 +1,15 @@
+all:
+  vars:
+    ansible_user: airflow
+
+servers:
+  hosts:
+    server:
+      ansible_host: 0.0.0.0
+
+workers:
+  hosts:
+    worker_1:
+      ansible_host: 0.0.0.0
+    worker_2:
+      ansible_host: 0.0.0.0

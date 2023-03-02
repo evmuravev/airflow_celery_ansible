@@ -1,9 +1,0 @@
-[all:vars]
-ansible_user=root
-
-[servers]
-airflow_servers ansible_host=172.23.0.5 ansible_port=22
-
-[workers_group_1]
-airflow_workers_group_1 ansible_host=172.23.0.4 ansible_port=22
-

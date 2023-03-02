@@ -7,12 +7,9 @@
         config: "{{ airflow }}"
 
 - name: start airflow workers
-  hosts: "workers_group_1"
+  hosts: "workers"
   roles:
     - role: "workers"
-      vars:
-        workers: "{{ airflow.workers_groups['workers_group_1'].workers }}"
-        worker_group: workers_group_1
 
 - name: start airflow servers
   hosts: "servers"

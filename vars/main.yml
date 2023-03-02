@@ -4,24 +4,17 @@ airflow:
   email: admin@admin
   fernet_key: VYCLCTGPY5xhmKY-ReNL_RPy5F6bA7ExUO_tyScpsIo=
   secret_key: my_secret
-  port: 8778
-
-  workers_groups:
-    workers_group_1:
-        address: '172.17.0.1'
-        workers: 2
-  # workers_group_2:
-  #     address: '10.0.2.2'
-  #     workers: 3
+  port: 8080
+  os_user: airflow
 
   flower:
-    port: 5555
+    port: 8778
   redis:
-    host: 172.23.0.2
+    host: 10.128.0.31
     port: 6379
   sql_conn:
     type: postgresql+psycopg2
-    host: 172.23.0.3
+    host: 10.128.0.31
     port: 5432
     db: airflow
     usr: postgres
