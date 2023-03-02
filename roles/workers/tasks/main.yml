@@ -1,0 +1,11 @@
+- include_tasks: _xx_run_airflow_container.yml
+  vars:
+    container_name: worker_{{ workers_counter }}
+    command: celery worker
+    restart_policy: always
+    hostname: "{{ worker_group }}_{{ workers_counter }}"
+    var_exposed_ports:
+      - 8793
+  with_sequence: "count={{ workers }}"
+  loop_control:
+    loop_var: workers_counter

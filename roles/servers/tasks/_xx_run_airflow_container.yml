@@ -1,0 +1,19 @@
+- name: "01 - airflow - run container - {{ command }}"
+  docker_container:
+    name: "airflow_{{ container_name if container_name is defined else command | replace(' ', '_') }}"
+    image: "localhost:5000/dev-airflow:latest"  #  path to the docker registry (nexus?)
+    state: started
+    pull: yes
+    docker_api_version: auto
+    command: "{{ command }} "
+    restart_policy: "{{ restart_policy | default('no') }}"
+    ports: "{{ ports | default([]) }}"
+    hostname: "{{ hostname | default('') }}"
+    etc_hosts: "{{ extra_hosts | default({}) }}"
+    exposed_ports: "{{ var_exposed_ports | default([]) }}"
+    volumes:
+     - "/opt/airflow/logs:/opt/airflow/logs"
+     - "/opt/airflow/dags:/opt/airflow/dags"
+     - "/opt/airflow/plugins:/opt/airflow/plugins"
+     - "/var/run/docker.sock:/var/run/docker.sock"
+    env_file: "/opt/airflow/airflow.env"

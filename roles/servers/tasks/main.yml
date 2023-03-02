@@ -1,0 +1,54 @@
+- set_fact:
+    etc_hosts: >-
+      {%- set result = {} -%}
+      {%- for wg, wg_value in airflow.workers_groups.items() -%}
+        {%- for i in range(1, wg_value.workers + 1) -%}
+            {%- set _ = result.update({wg+'_'+i|string: wg_value.address}) -%}
+        {%- endfor -%}
+      {%- endfor -%}
+      {{ result | to_json | from_json }}
+
+- include_tasks: _xx_run_airflow_container.yml
+  vars:
+      command: db upgrade
+  ignore_errors: True
+
+- name: waiting for db upgrade to complete
+  command: "docker wait airflow_db_upgrade"
+
+- include_tasks: _xx_run_airflow_container.yml
+  vars:
+    container_name: create_user
+    command: users create --username {{ config.username }} --role Admin --email {{ config.email }} --password {{ config.password }} -f admin -l admin
+
+- include_tasks: _xx_run_airflow_container.yml
+  vars:
+    command: webserver
+    restart_policy: always
+    ports:
+      - "{{ config.port }}:{{ config.port }}"
+    extra_hosts: "{{ etc_hosts }}"
+
+- include_tasks: _xx_run_airflow_container.yml
+  vars:
+    command: scheduler
+    restart_policy: always
+    extra_hosts: "{{ etc_hosts }}"
+
+- include_tasks: _xx_run_airflow_container.yml
+  vars:
+    container_name: scheduler_{{ counter }}
+    command: scheduler
+    restart_policy: always
+    extra_hosts: "{{ etc_hosts }}"
+  with_sequence: "count=2"
+  loop_control:
+    loop_var: counter
+
+- include_tasks: _xx_run_airflow_container.yml
+  vars:
+    command: celery flower
+    restart_policy: always
+    ports:
+      - "{{ config.flower.port }}:{{ config.flower.port }}"
+
