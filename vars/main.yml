@@ -6,6 +6,7 @@ airflow:
   secret_key: my_secret
   port: 8080
   os_user: airflow
+  airflow_host_dir: /home/airflow
 
   flower:
     port: 8778

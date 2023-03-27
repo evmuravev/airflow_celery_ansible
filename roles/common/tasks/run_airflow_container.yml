@@ -13,8 +13,8 @@
     exposed_ports: "{{ var_exposed_ports | default([]) }}"
     user: airflow
     volumes:
-     - "/home/airflow/airflow/logs:/opt/airflow/logs"
-     - "/home/airflow/airflow/dags:/opt/airflow/dags"
-     - "/home/airflow/airflow/plugins:/opt/airflow/plugins"
+     - "{{ airflow_host_dir }}/airflow/logs:/opt/airflow/logs"
+     - "{{ airflow_host_dir }}/airflow/dags:/opt/airflow/dags"
+     - "{{ airflow_host_dir }}/airflow/plugins:/opt/airflow/plugins"
     #  - "/var/run/docker.sock:/var/run/docker.sock"
-    env_file: "/home/airflow/airflow/airflow.env"
+    env_file: "{{ airflow_host_dir }}/airflow/airflow.env"
