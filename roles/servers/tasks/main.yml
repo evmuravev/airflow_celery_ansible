@@ -17,14 +17,14 @@
 - include_tasks: "../roles/common/tasks/run_airflow_container.yml"
   vars:
     container_name: create_user
-    command: users create --username {{ config.username }} --role Admin --email {{ config.email }} --password {{ config.password }} -f admin -l admin
+    command: users create --username {{ airflow.username }} --role Admin --email {{ airflow.email }} --password {{ airflow.password }} -f admin -l admin
 
 - include_tasks: "../roles/common/tasks/run_airflow_container.yml"
   vars:
     command: webserver
     restart_policy: always
     ports:
-      - "{{ config.port }}:{{ config.port }}"
+      - "{{ airflow.port }}:{{ airflow.port }}"
     extra_hosts: "{{ etc_hosts }}"
 
 - include_tasks: "../roles/common/tasks/run_airflow_container.yml"
@@ -44,6 +44,6 @@
     restart_policy: always
     extra_hosts: "{{ etc_hosts }}"
     ports:
-      - "{{ config.flower.port }}:{{ config.flower.port }}"
+      - "{{ airflow.flower.port }}:{{ airflow.flower.port }}"
     var_exposed_ports:
-      - "{{ config.flower.port }}"
+      - "{{ airflow.flower.port }}"

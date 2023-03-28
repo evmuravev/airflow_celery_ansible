@@ -3,8 +3,6 @@
   hosts: "*"
   roles:
     - role: "common"
-      vars:
-        config: "{{ airflow }}"
 
 - name: start airflow workers
   hosts: "workers"
@@ -15,5 +13,3 @@
   hosts: "servers"
   roles:
       - role: "servers"
-        vars:
-          config: "{{ airflow }}"

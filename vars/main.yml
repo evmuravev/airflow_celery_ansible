@@ -20,3 +20,17 @@ airflow:
     db: airflow
     usr: postgres
     pwd: postgres
+
+dbt:
+  airflow_dbt_test:
+    target: dev
+    outputs:
+      dev:
+        type: postgres
+        host: 10.128.0.31
+        user: postgres
+        password: postgres
+        port: 5432
+        dbname: airflow
+        schema: public
+        threads: 4

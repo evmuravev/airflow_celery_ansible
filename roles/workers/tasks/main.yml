@@ -8,3 +8,24 @@
       - 8793
     ports:
       - 8793:8793
+
+### dbt ###
+- name: create dbt directory
+  file:
+    path: "{{ airflow.airflow_host_dir }}/dbt/"
+    state: directory
+    mode: 0777
+
+- name: create dbt directory
+  file:
+    path: "{{ airflow.airflow_host_dir }}/dbt/.dbt"
+    state: directory
+    mode: 0777
+
+- name: config - generate dbt profiles
+  template:
+    src: "./templates/{{ item }}.j2"
+    dest: "{{ airflow.airflow_host_dir }}/dbt/.dbt/{{ item }}"
+    mode: 0777
+  with_items:
+    - profiles.yml
