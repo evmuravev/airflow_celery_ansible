@@ -17,6 +17,5 @@
      - "{{ airflow.airflow_host_dir }}/airflow/dags:/opt/airflow/dags"
      - "{{ airflow.airflow_host_dir }}/airflow/plugins:/opt/airflow/plugins"
      - "/var/run/docker.sock:/var/run/docker.sock"
-     - "{{ airflow.airflow_host_dir }}/dbt:/opt/dbt"
-     - "/usr/local/bin/dbt:/usr/local/bin/dbt"
+     - "{{ airflow.airflow_host_dir }}/dbt:/opt/dbt" # dir for dbt projetcs
     env_file: "{{ airflow.airflow_host_dir }}/airflow/airflow.env"

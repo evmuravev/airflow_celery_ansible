@@ -1,22 +1,22 @@
 airflow:
-  username: admin
-  password: admin
-  email: admin@admin
-  fernet_key: VYCLCTGPY5xhmKY-ReNL_RPy5F6bA7ExUO_tyScpsIo=
-  secret_key: my_secret
-  port: 8080
-  os_user: airflow
-  airflow_host_dir: /home/airflow
+  username: "{{ lookup('env', 'airflow.user.name') }}" # initial user (if there is no LDAP auth)
+  password: "{{ lookup('env', 'airflow.user.password') }}" 
+  email: "{{ lookup('env', 'airflow.user.email') }}" 
+  fernet_key: "{{ lookup('env', 'airflow.fernet_key') }}"
+  secret_key: "{{ lookup('env', 'airflow.secret_key') }}" 
+  port: "{{ lookup('env', 'airflow.port') }}" # webserver port
+  os_user: "{{ lookup('env', 'airflow.os_user') }}" # Airflow UID in container
+  airflow_host_dir: "{{ lookup('env', 'airflow.host_dir') }}" # the dir on the host in which the dags dir will be created, e.g. /home/airflow
 
   flower:
-    port: 8778
+    port: "{{ lookup('env', 'flower.port') }}"
   redis:
-    host: 10.128.0.31
-    port: 6379
+    host: "{{ lookup('env', 'redis.host') }}"
+    port: "{{ lookup('env', 'redis.port') }}"
   sql_conn:
-    type: postgresql+psycopg2
-    host: 10.128.0.31
-    port: 5432
-    db: airflow
-    usr: postgres
-    pwd: postgres
+    type: "{{ lookup('env', 'redis.port') }}" # e.g. postgresql+psycopg2
+    host: "{{ lookup('env', 'sql_conn.host') }}"
+    port: "{{ lookup('env', 'sql_conn.port') }}"
+    db: "{{ lookup('env', 'sql_conn.db') }}"
+    usr: "{{ lookup('env', 'sql_conn.usr') }}"
+    pwd: "{{ lookup('env', 'sql_conn.pwd') }}"
