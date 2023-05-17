@@ -9,6 +9,7 @@
 - include_tasks: "../roles/common/tasks/run_airflow_container.yml"
   vars:
       command: db upgrade
+      auto_remove: yes
   ignore_errors: True
 
 - name: waiting for db upgrade to complete
@@ -18,6 +19,18 @@
   vars:
     container_name: create_user
     command: users create --username {{ airflow.username }} --role Admin --email {{ airflow.email }} --password {{ airflow.password }} -f admin -l admin
+    auto_remove: yes
+
+- include_tasks: "../roles/common/tasks/run_airflow_container.yml"
+  vars:
+    container_name: servers_host_worker
+    command: celery worker -q default,servers_host_worker
+    restart_policy: always
+    hostname: "{{ inventory_hostname }}"
+    var_exposed_ports:
+      - 8793
+    ports:
+      - 8793:8793
 
 - include_tasks: "../roles/common/tasks/run_airflow_container.yml"
   vars:
@@ -47,3 +60,7 @@
       - "{{ airflow.flower.port }}:{{ airflow.flower.port }}"
     var_exposed_ports:
       - "{{ airflow.flower.port }}"
+
+- name: restart workers
+  shell: docker restart $(docker ps --filter "name=worker" -q)4
+

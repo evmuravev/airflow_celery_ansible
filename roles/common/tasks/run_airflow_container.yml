@@ -19,3 +19,4 @@
      - "/var/run/docker.sock:/var/run/docker.sock"
      - "{{ airflow.airflow_host_dir }}/dbt:/opt/dbt" # dir for dbt projetcs
     env_file: "{{ airflow.airflow_host_dir }}/airflow/airflow.env"
+    auto_remove: "{{ auto_remove | default('no') }}"

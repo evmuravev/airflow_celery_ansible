@@ -9,6 +9,10 @@
     ports:
       - 8793:8793
 
+- name: restart workers
+  shell: docker restart $(docker ps --filter "name=worker" -q)4
+
+
 ### dbt ###
 - name: create dbt directory
   file:
